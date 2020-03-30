@@ -1,0 +1,38 @@
+---
+title: "DATA 607 - Week 9"
+author: "Chitrarth Kaushik"
+date: "3/30/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r fetching data, eval=TRUE}
+
+library(jsonlite)
+library(dplyr)
+library(devtools)
+library(stringr)
+
+key <- "GsGHyp6G5fbIL9gcbjTA1Lc4LoRVwsAO"
+
+# add url and text required for call
+ny_url <- "https://api.nytimes.com/svc/topstories/v2/home.json?api-key="
+
+# fetching data using NY api
+top_stories <- fromJSON(paste0(ny_url, key))
+
+# summary
+summary(top_stories)
+
+#looking at the results
+fin_results<-top_stories$results
+head(fin_results)
+
+#extracting the relevant sections from the fetched data
+fin_results <- fin_results %>%select(section,title,abstract,short_url)%>%arrange(section)
+knitr::kable(fin_results)
+
+```
